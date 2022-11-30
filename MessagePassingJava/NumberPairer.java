@@ -23,8 +23,8 @@ public class NumberPairer implements Runnable{
         
         while(true){
             try {
-                System.out.println(numberGenerators1.take());
-                System.out.println(numberGenerators2.take());
+                numberPairerChannel1.put(numberGenerators1.take(), numberGenerators2.take());
+                numberPairerChannel2.put(numberGenerators2.take());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

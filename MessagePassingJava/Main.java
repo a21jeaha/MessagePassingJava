@@ -9,11 +9,13 @@ public class Main{
         
         SynchronousQueue<Integer> numberGenerators1 = new SynchronousQueue<>();
         SynchronousQueue<Integer> numberGenerators2 = new SynchronousQueue<>();
-        SynchronousQueue<Integer> numberPairerChannel = new SynchronousQueue<>();
+        SynchronousQueue<Object> numberPairerChannel1 = new SynchronousQueue<>();
+        SynchronousQueue<Integer> numberPairerChannel2 = new SynchronousQueue<>();
+        
 
         RandomNumberGenerators randomNumberGenerators1 = new RandomNumberGenerators(numberGenerators1);
         RandomNumberGenerators randomNumberGenerators2 = new RandomNumberGenerators(numberGenerators2);
-        NumberPairer numberPairer = new NumberPairer(numberPairerChannel, numberGenerators1, numberGenerators2);
+        NumberPairer numberPairer = new NumberPairer(numberPairerChannel1, numberPairerChannel2, numberGenerators1, numberGenerators2);
         
         Thread thread1 = new Thread(randomNumberGenerators1);
         Thread thread2 = new Thread(randomNumberGenerators2);
