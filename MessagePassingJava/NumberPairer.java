@@ -1,5 +1,6 @@
 package MessagePassingJava;
 
+import java.util.LinkedList;
 import java.util.concurrent.SynchronousQueue;
 
 import javax.sql.rowset.spi.SyncFactory;
@@ -8,13 +9,15 @@ public class NumberPairer implements Runnable{
     
     SynchronousQueue<Integer> numberGenerators1;
     SynchronousQueue<Integer> numberGenerators2;
-    SynchronousQueue<Integer> numberPairerChannel1;
+    SynchronousQueue<LinkedList> numberPairerChannel1;
+    LinkedList numberPair; 
     SynchronousQueue<Integer> numberPairerChannel2;
 
     public NumberPairer(SynchronousQueue numberPairerChannel1, SynchronousQueue numberPairerChannel2, SynchronousQueue numberGenerator1, SynchronousQueue numberGenerator2 ){
         this.numberPairerChannel1 = numberPairerChannel1;
         this.numberPairerChannel2 = numberPairerChannel2;
         this.numberGenerators1 = numberGenerator1;
+        numberPair = new LinkedList<>();
         this.numberGenerators2 = numberGenerator2;
     }
 
@@ -23,8 +26,12 @@ public class NumberPairer implements Runnable{
         
         while(true){
             try {
-                numberPairerChannel1.put(numberGenerators1.take(), numberGenerators2.take());
-                numberPairerChannel2.put(numberGenerators2.take());
+                numberPair.add(numberGenerators1.take());
+                numberPair.add(numberGenerators2.take());
+
+                numberPairerChannel1.put(numberPair);
+                //numberPairerChannel1.put(numberGenerators2.take());
+                //numberPairerChannel2.put(numberGenerators2.take());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
